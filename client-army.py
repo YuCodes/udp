@@ -4,7 +4,6 @@
 import socket
 import cv2
 import numpy as np
-import sys
 import time
 import argparse
 
@@ -18,8 +17,7 @@ args = parser.parse_args()
 
 # Create a UDP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-sock.setblocking(0)
+# sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 host = args.host
 port = args.port
 server_address = (host, port)

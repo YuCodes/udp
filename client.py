@@ -2,9 +2,7 @@
 # coding: utf-8
 
 import socket
-import cv2
-import numpy as np
-import sys
+
 import time
 import argparse
 import video_grabber
@@ -28,12 +26,12 @@ sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 host = args.host
 port = args.port
 server_address = (host, port)
-
+# sock.bind(('127.0.0.1', 5000))
 
 t0 = time.time()
 frame_idx = 0
 
-grabber = video_grabber.VideoGrabber(jpeg_quality, encoder)
+grabber = video_grabber.VideoGrabber(jpeg_quality)
 grabber.start()
 get_message = lambda: grabber.get_buffer()
 
