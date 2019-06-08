@@ -21,7 +21,6 @@ class Broker():
         self.server_address = ('127.0.0.1', 5000)
         self.sock.bind(self.server_address)
         self.clients_list = []
-        self.sock.setblocking(0)
 
     def talkToClient(self):
 
