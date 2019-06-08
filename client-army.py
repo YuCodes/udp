@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import time
 import argparse
-
+import sys
 parser = argparse.ArgumentParser()
 parser.add_argument('--host', type=str, help='The IP at the server is listening', required=True)
 parser.add_argument('--port', type=int, help='The port on which the server is listening', required=True)
@@ -43,9 +43,9 @@ while(True):
             break
         frame_idx += 1
 
-        if frame_idx == 30:
+        if frame_idx < 30:
             t1 = time.time()
-            #sys.stdout.write('\r Framerate : {:.2f} frames/s.     '.format(30 / (t1 - t0)))
-            #sys.stdout.flush()
+            sys.stdout.write('\r Framerate : {:.2f} frames/s.     '.format(30 / (t1 - t0)))
+            sys.stdout.flush()
             t0 = t1
             frame_idx = 0

@@ -5,7 +5,7 @@ import socket
 import cv2
 import time
 import logging
-
+from timeit import default_timer as timer
 class Broker():
 
 
@@ -28,10 +28,12 @@ class Broker():
         while True:
 
             data, address = self.sock.recvfrom(65507)
+
             if data == b'000000000000000000000000000000000000000000000000000':
                 print('requested from army')
                 self.sock.sendto(buffer_array[len(buffer_array) - 1], address)
                 broadcast_frame_idx += 1
+                time.sleep(0.09)
             elif len(data) > 10000:
                 print('requested from camera')
                 self.sock.sendto("from server saying hello to camera".encode('utf-8'), address)
