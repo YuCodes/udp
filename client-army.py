@@ -18,6 +18,7 @@ args = parser.parse_args()
 # Create a UDP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+sock.settimeout(0.5)
 host = args.host
 port = args.port
 server_address = (host, port)
@@ -29,8 +30,11 @@ frame_idx = 0
 
 while(True):
 
-    sent = sock.sendto("000000000000000000000000000000000000000000000000000".encode('utf-8'), server_address)
-    data, server = sock.recvfrom(65507)
+    sent = sock.sendto("0".encode('utf-8'), server_address)
+    try:
+        data, server = sock.recvfrom(65507)
+    except:
+        continue
 
     if data:
         array = np.frombuffer(data, dtype=np.dtype('uint8'))

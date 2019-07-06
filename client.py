@@ -23,6 +23,7 @@ encoder = args.encoder
 # Create a UDP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+sock.settimeout(2.0)
 host = args.host
 port = args.port
 server_address = (host, port)
@@ -30,13 +31,14 @@ server_address = (host, port)
 
 t0 = time.time()
 frame_idx = 0
+iter = 0
 
 grabber = video_grabber.VideoGrabber(jpeg_quality)
 grabber.start()
 get_message = lambda: grabber.get_buffer()
 
 while(True):
-
+    iter += 1
     buffer = get_message()
     if buffer is None:
         continue
@@ -44,9 +46,14 @@ while(True):
         print(
             "The message is too large to be sent within a single UDP datagram. We do not handle splitting the message in multiple datagrams")
         sock.sendto("FAIL".encode('utf-8'), server_address)
+
         continue
     sock.sendto(buffer, server_address)
-    data, address = sock.recvfrom(65507)
+    time.sleep(0.2)
+    #try:
+        #data, address = sock.recvfrom(65507)
+    #except:
+        #print('Timed out ', iter)
 
 
 grabber.join()

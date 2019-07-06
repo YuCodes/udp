@@ -14,7 +14,7 @@ class Broker():
         logging.info('Initializing Broker')
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.server_address = ('127.0.0.1', 5000)
+        self.server_address = ('', 5000)
         self.sock.bind(self.server_address)
         self.clients_list = []
 
@@ -29,14 +29,13 @@ class Broker():
 
             data, address = self.sock.recvfrom(65507)
 
-            if data == b'000000000000000000000000000000000000000000000000000':
+            if data == b'0':
                 print('requested from army')
                 self.sock.sendto(buffer_array[len(buffer_array) - 1], address)
                 broadcast_frame_idx += 1
-                time.sleep(0.09)
             elif len(data) > 10000:
                 print('requested from camera')
-                self.sock.sendto("from server saying hello to camera".encode('utf-8'), address)
+                #self.sock.sendto("from server saying hello to camera".encode('utf-8'), address)
                 buffer_array.append(data)
 
                 cv2.waitKey(1)
